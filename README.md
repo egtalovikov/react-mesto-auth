@@ -1,7 +1,55 @@
-# Здесь будет ваш проект на Реакте с авторизацией и регистрацией
+# Mesto React
 
-Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов. 
+<p align="center">
+    <img alt="Version 0.1.0" src="https://img.shields.io/badge/version-0.1.0-blue" />
+    <img alt="Quality" src="https://img.shields.io/badge/status-development-orange.svg" >
+    <img alt="Made by: egtalovikov" src="https://img.shields.io/badge/made%20by-egtalovikov-blue" />
+</p>
 
-Все запросы на авторизацию, регистрацию и проверку токена должны работать через сервис `https://auth.nomoreparties.co`. Остальные запросы, не относящиеся к этой проектной работе могут быть к бэкенду из предыдущих спринтов.
+Mesto React - это проектная работа по профессии "Веб-разработчик" в [Яндекс.Практикумe](https://praktikum.yandex.ru "Яндекс Практикум").
 
-Успехов!
+## Описание
+
+Одностраничная интерактивная социальная сеть с возможностью просмотра увеличенного изображения. При загрузке страницы данные берутся с сервера.
+
+## Стек
+
+* HTML
+* CSS
+* JavaScript
+* React
+
+
+## Технологии
+
+* Flexbox-верстка
+* Grid
+* Transitions
+* Позиционирование
+* API
+* Формы
+* Медиа-запросы
+* БЭМ (Nested)
+* ООП
+* Create React App
+* React Hooks
+
+## Инструкция по развёртыванию
+
+<p align="center">
+    <img alt="NPM Version 8.15.0" src="https://img.shields.io/badge/npm-v8.15.0-blue" />
+    <img alt="Node Version 16.17.1" src="https://img.shields.io/badge/node-v16.17.1-blue" />
+</p>
+
+* Склонировать репозиторий
+```
+git clone https://github.com/egtalovikov/mesto-react.git
+```
+* Выполнить команду
+```
+npm i
+```
+* Развернуть локальный сервер с помощью команды
+```
+npm start
+```
