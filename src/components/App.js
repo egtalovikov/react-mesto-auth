@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
@@ -9,6 +10,9 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -18,6 +22,7 @@ function App() {
   const [selectedCard, setCard] = React.useState({ name: '', link: '' });;
   const [currentUser, setCurrentUser] = React.useState({});;
   const [isLoading, setIsLoading] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
 
   React.useEffect(() => {
@@ -78,17 +83,17 @@ function App() {
 
   React.useEffect(() => {
     function closeByEscape(evt) {
-      if(evt.key === 'Escape') {
+      if (evt.key === 'Escape') {
         closeAllPopups();
       }
     }
-    if(isOpen) {
+    if (isOpen) {
       document.addEventListener('keydown', closeByEscape);
       return () => {
         document.removeEventListener('keydown', closeByEscape);
       }
     }
-  }, [isOpen]) 
+  }, [isOpen])
 
 
   function handleUpdateUser(user) {
@@ -166,7 +171,18 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header />
-      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+      <Switch>
+      <Route path="/sign-up">
+            <Register />
+          </Route>
+          <Route path="/sign-in">
+            <Login />
+          </Route>
+        <Route exact path="/">
+        <ProtectedRoute path="/main" component={Main} onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+          {loggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
+        </Route>
+      </Switch>
       <Footer />
       <EditAvatarPopup isLoading={isLoading} isOpen={isEditAvatarPopupOpen} onClose={handlePopupClose} onUpdateAvatar={handleUpdateAvatar} />
       <AddPlacePopup isLoading={isLoading} isOpen={isAddPlacePopupOpen} onClose={handlePopupClose} onAddPlace={handleAddPlaceSubmit} />
@@ -177,4 +193,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRouter(App);
