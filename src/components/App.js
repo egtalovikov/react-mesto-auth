@@ -11,8 +11,6 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import InfoTooltip from './InfoTooltip';
-import successImage from '../images/info-success.svg';
-import failImage from '../images/info-fail.svg';
 import * as auth from '../auth.js';
 
 function App() {
@@ -20,11 +18,13 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlace] = React.useState(false);
   const [isEditAvatarPopupOpen, setEditAvatar] = React.useState(false);
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
   const [selectedCard, setCard] = React.useState({ name: '', link: '' });;
   const [currentUser, setCurrentUser] = React.useState({});;
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const history = useHistory();
+  const [email, setEmail] = React.useState('');
 
 
   React.useEffect(() => {
@@ -62,6 +62,7 @@ function App() {
       auth.checkToken(jwt)
       .then((res) => {
         if (res) {
+          setEmail(res.data.email)
           setLoggedIn(true);
           history.push('/')
         }
@@ -95,10 +96,11 @@ function App() {
     setEditAvatar(false);
     setIsEditProfilePopupOpen(false);
     setAddPlace(false);
+    setIsInfoPopupOpen(false);
     setCard({ name: '', link: '' });
   }
 
-  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard.link
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard.link || isInfoPopupOpen;
 
   React.useEffect(() => {
     function closeByEscape(evt) {
@@ -188,20 +190,20 @@ function App() {
   }
 
   const [headerLink, changeHeaderLink] = React.useState({ link: 'sign-up', title: 'Регистрация'} );
-  const [infoTooltipImage, changeInfoTooltipImage] = React.useState(successImage)
-  const [infoTooltipMessage, changeInfoTooltipMessage] = React.useState('Вы успешно зарегистрировались!')
+  const [infoTooltipImage, changeInfoTooltipImage] = React.useState('');
+  const [infoTooltipMessage, changeInfoTooltipMessage] = React.useState('');
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header headerLink={headerLink} />
-      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} setLoggedIn={setLoggedIn} changeHeaderLink={changeHeaderLink} history={history} />
+      <Header headerLink={headerLink} loggedIn={loggedIn} setLoggedIn={setLoggedIn} email={email} />
+      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} setLoggedIn={setLoggedIn} changeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} />
       {loggedIn && <Footer />}
       <EditAvatarPopup isLoading={isLoading} isOpen={isEditAvatarPopupOpen} onClose={handlePopupClose} onUpdateAvatar={handleUpdateAvatar} />
       <AddPlacePopup isLoading={isLoading} isOpen={isAddPlacePopupOpen} onClose={handlePopupClose} onAddPlace={handleAddPlaceSubmit} />
       <PopupWithForm isLoading={isLoading} name={'confirmation'} title={'Вы уверены?'} buttonText={'Да'} onClose={handlePopupClose} />
       <EditProfilePopup isLoading={isLoading} isOpen={isEditProfilePopupOpen} onClose={handlePopupClose} onUpdateUser={handleUpdateUser} />
       <ImagePopup card={selectedCard} onClose={handlePopupClose} />
-      <InfoTooltip image={infoTooltipImage} name={'info'} message={infoTooltipMessage} />
+      <InfoTooltip image={infoTooltipImage} isOpen={isInfoPopupOpen} name={'info'} message={infoTooltipMessage} onClose={handlePopupClose} />
     </CurrentUserContext.Provider>
   );
 }

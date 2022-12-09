@@ -3,6 +3,7 @@
   opacity: 1;
   transition: opacity 0.3s ease;
   cursor: pointer;
+  border-radius: 2px;
 }
 
 .buttons:hover {

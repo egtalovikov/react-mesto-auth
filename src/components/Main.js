@@ -5,7 +5,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Login from './Login';
 import Register from './Register';
 
-function Main({ onEditAvatar, onEditProfile, cards, onCardClick, onAddPlace, onCardLike, onCardDelete, changeHeaderLink, loggedIn, setLoggedIn, history }) {
+function Main({ onEditAvatar, onEditProfile, cards, onCardClick, onAddPlace, onCardLike, onCardDelete, changeHeaderLink, loggedIn, setLoggedIn, history, setIsInfoPopupOpen, changeInfoTooltipImage, changeInfoTooltipMessage }) {
   const currentUser = React.useContext(CurrentUserContext); 
 
   function handleLogin() {
@@ -16,7 +16,7 @@ function Main({ onEditAvatar, onEditProfile, cards, onCardClick, onAddPlace, onC
     <main className="content">
       <Switch>
         <Route path="/sign-up">
-          <Register handleChangeHeaderLink={changeHeaderLink} history={history} />
+          <Register handleChangeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} />
         </Route>
         <Route path="/sign-in">
           <Login handleLogin={handleLogin} handleChangeHeaderLink={changeHeaderLink} history={history} />

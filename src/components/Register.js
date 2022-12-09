@@ -2,10 +2,12 @@ import React from "react";
 import { Link, withRouter } from 'react-router-dom';
 import { useForm } from "../hooks/useForm";
 import * as auth from '../auth.js';
+import successImage from '../images/info-success.svg';
+import failImage from '../images/info-fail.svg';
 
-function Register({ handleChangeHeaderLink, history }) {
+function Register({ handleChangeHeaderLink, history, setIsInfoPopupOpen, changeInfoTooltipImage, changeInfoTooltipMessage }) {
     React.useEffect(() => {
-        handleChangeHeaderLink({link: 'sign-in', title: 'Войти'})
+        handleChangeHeaderLink({ link: 'sign-in', title: 'Войти' })
     }, []);
 
     const { values, handleChange, setValues } = useForm({});
@@ -13,11 +15,19 @@ function Register({ handleChangeHeaderLink, history }) {
     function handleSubmit(e) {
         e.preventDefault();
         auth.register(values.email, values.password)
-        .then((res) => {
-            if (res.statusCode !== 400) {
-                history.push('/sign-in');
-            }
-        })
+            .then((res) => {
+                if (res.status !== 400) {
+                    history.push('/sign-in');
+                    changeInfoTooltipImage(successImage);
+                    changeInfoTooltipMessage('Вы успешно зарегистрировались!')
+                } else {
+                    changeInfoTooltipImage(failImage);
+                    changeInfoTooltipMessage('Что-то пошло не так! Попробуйте ещё раз.')
+                }
+            })
+            .finally(() => {
+                setIsInfoPopupOpen(true);
+            })
     }
 
     return (
