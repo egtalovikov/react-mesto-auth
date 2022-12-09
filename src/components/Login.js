@@ -1,19 +1,29 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
+import * as auth from '../auth.js';
 
-function Login({ handleChangeHeaderLink }) {
-    const [username, setUsername] = React.useState('');
-    const [password, setPassword] = React.useState('');
-
+function Login({ handleChangeHeaderLink, handleLogin, history }) {
     React.useEffect(() => {
         handleChangeHeaderLink({link: 'sign-up', title: 'Регистрация'})
     }, []);
 
     const {values, handleChange, setValues} = useForm({});
     
-    function handleSubmit() {
-
+    function handleSubmit(e) {
+        e.preventDefault();
+        if (!values.email || !values.password) {
+            return;
+        }
+        auth.authorize(values.email, values.password)
+        .then((data) => {
+            if (data.token) {
+                setValues({});
+                handleLogin();
+                history.push('/');
+            }
+        })
+        .catch(err => console.log(err));
     }
 
     return (
@@ -22,8 +32,8 @@ function Login({ handleChangeHeaderLink }) {
                 Вход
             </p>
             <form onSubmit={handleSubmit} className="login__form">
-                <input className="login__input" required id="username" name="username" type="text" value={values.username} onChange={handleChange} placeholder="Email" />
-                <input className="login__input" required id="password" name="password" type="text" value={values.password} onChange={handleChange} placeholder="Пароль" />
+                <input className="login__input" required id="email" name="email" type="text" value={values.email || ''} onChange={handleChange} placeholder="Email" />
+                <input className="login__input" required id="password" name="password" type="text" value={values.password || ''} onChange={handleChange} placeholder="Пароль" />
                 <button type="submit" onSubmit={handleSubmit} className="login__button buttons">Войти</button>
             </form>
         </section>

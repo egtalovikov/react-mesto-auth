@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useHistory } from 'react-router-dom';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
@@ -13,6 +13,7 @@ import AddPlacePopup from './AddPlacePopup';
 import InfoTooltip from './InfoTooltip';
 import successImage from '../images/info-success.svg';
 import failImage from '../images/info-fail.svg';
+import * as auth from '../auth.js';
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -23,6 +24,7 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});;
   const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const history = useHistory();
 
 
   React.useEffect(() => {
@@ -49,6 +51,23 @@ function App() {
 
       })
   }, [])
+
+  React.useEffect(() => {
+    handleTokenCheck();
+  }, [])
+
+  function handleTokenCheck() {
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      auth.checkToken(jwt)
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          history.push('/')
+        }
+      })
+    }
+  }
 
   function handleEditAvatarClick() {
     setEditAvatar(true);
@@ -175,7 +194,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header headerLink={headerLink} />
-      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} changeHeaderLink={changeHeaderLink} />
+      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} setLoggedIn={setLoggedIn} changeHeaderLink={changeHeaderLink} history={history} />
       {loggedIn && <Footer />}
       <EditAvatarPopup isLoading={isLoading} isOpen={isEditAvatarPopupOpen} onClose={handlePopupClose} onUpdateAvatar={handleUpdateAvatar} />
       <AddPlacePopup isLoading={isLoading} isOpen={isAddPlacePopupOpen} onClose={handlePopupClose} onAddPlace={handleAddPlaceSubmit} />

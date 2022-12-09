@@ -5,17 +5,21 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Login from './Login';
 import Register from './Register';
 
-function Main({ onEditAvatar, onEditProfile, cards, onCardClick, onAddPlace, onCardLike, onCardDelete, changeHeaderLink, loggedIn }) {
-  const currentUser = React.useContext(CurrentUserContext);
+function Main({ onEditAvatar, onEditProfile, cards, onCardClick, onAddPlace, onCardLike, onCardDelete, changeHeaderLink, loggedIn, setLoggedIn, history }) {
+  const currentUser = React.useContext(CurrentUserContext); 
+
+  function handleLogin() {
+    setLoggedIn(true);
+  }
 
   return (
     <main className="content">
       <Switch>
         <Route path="/sign-up">
-          <Register handleChangeHeaderLink={changeHeaderLink} />
+          <Register handleChangeHeaderLink={changeHeaderLink} history={history} />
         </Route>
         <Route path="/sign-in">
-          <Login handleChangeHeaderLink={changeHeaderLink} />
+          <Login handleLogin={handleLogin} handleChangeHeaderLink={changeHeaderLink} history={history} />
         </Route>
         <Route exact path="/">
           {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up" />}
