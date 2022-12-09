@@ -2,8 +2,9 @@
   color: #FFFFFF;
   opacity: 1;
   transition: opacity 0.3s ease;
+  cursor: pointer;
 }
 
 .buttons:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }

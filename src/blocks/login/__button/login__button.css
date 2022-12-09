@@ -1,0 +1,11 @@
+.login__button {
+    color: #000000;
+    height: 50px;
+    margin: 0 0 77px; 
+}
+
+@media screen and (min-width: 768px) {
+    .login__button {
+        margin: 0 0 112px;
+    }
+}

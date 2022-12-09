@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
@@ -10,9 +10,9 @@ import ImagePopup from './ImagePopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import ProtectedRoute from './ProtectedRoute';
-import Register from './Register';
-import Login from './Login';
+import InfoTooltip from './InfoTooltip';
+import successImage from '../images/info-success.svg';
+import failImage from '../images/info-fail.svg';
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -168,27 +168,21 @@ function App() {
       .finally(() => setIsLoading(false));
   }
 
+  const [headerLink, changeHeaderLink] = React.useState({ link: 'sign-up', title: 'Регистрация'} );
+  const [infoTooltipImage, changeInfoTooltipImage] = React.useState(successImage)
+  const [infoTooltipMessage, changeInfoTooltipMessage] = React.useState('Вы успешно зарегистрировались!')
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Header />
-      <Switch>
-      <Route path="/sign-up">
-            <Register />
-          </Route>
-          <Route path="/sign-in">
-            <Login />
-          </Route>
-        <Route exact path="/">
-        <ProtectedRoute path="/main" component={Main} onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
-          {loggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
-        </Route>
-      </Switch>
-      <Footer />
+      <Header headerLink={headerLink} />
+      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} changeHeaderLink={changeHeaderLink} />
+      {loggedIn && <Footer />}
       <EditAvatarPopup isLoading={isLoading} isOpen={isEditAvatarPopupOpen} onClose={handlePopupClose} onUpdateAvatar={handleUpdateAvatar} />
       <AddPlacePopup isLoading={isLoading} isOpen={isAddPlacePopupOpen} onClose={handlePopupClose} onAddPlace={handleAddPlaceSubmit} />
       <PopupWithForm isLoading={isLoading} name={'confirmation'} title={'Вы уверены?'} buttonText={'Да'} onClose={handlePopupClose} />
       <EditProfilePopup isLoading={isLoading} isOpen={isEditProfilePopupOpen} onClose={handlePopupClose} onUpdateUser={handleUpdateUser} />
       <ImagePopup card={selectedCard} onClose={handlePopupClose} />
+      <InfoTooltip image={infoTooltipImage} name={'info'} message={infoTooltipMessage} />
     </CurrentUserContext.Provider>
   );
 }
