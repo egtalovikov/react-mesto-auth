@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import * as auth from '../auth.js';
 
-function Login({ handleChangeHeaderLink, handleLogin, history }) {
+function Login({ handleChangeHeaderLink, handleLogin, history, setEmail }) {
     React.useEffect(() => {
         handleChangeHeaderLink({link: 'sign-up', title: 'Регистрация'})
     }, []);
@@ -18,6 +18,7 @@ function Login({ handleChangeHeaderLink, handleLogin, history }) {
         auth.authorize(values.email, values.password)
         .then((data) => {
             if (data.token) {
+                setEmail(values.email);
                 setValues({});
                 handleLogin();
                 history.push('/');

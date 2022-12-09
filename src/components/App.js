@@ -196,7 +196,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header headerLink={headerLink} loggedIn={loggedIn} setLoggedIn={setLoggedIn} email={email} />
-      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} setLoggedIn={setLoggedIn} changeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} />
+      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} setLoggedIn={setLoggedIn} changeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} setEmail={setEmail} />
       {loggedIn && <Footer />}
       <EditAvatarPopup isLoading={isLoading} isOpen={isEditAvatarPopupOpen} onClose={handlePopupClose} onUpdateAvatar={handleUpdateAvatar} />
       <AddPlacePopup isLoading={isLoading} isOpen={isAddPlacePopupOpen} onClose={handlePopupClose} onAddPlace={handleAddPlaceSubmit} />
