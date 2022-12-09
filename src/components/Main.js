@@ -1,32 +1,12 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import Login from './Login';
-import Register from './Register';
 
 function Main({ onEditAvatar, onEditProfile, cards, onCardClick, onAddPlace, onCardLike, onCardDelete, changeHeaderLink, loggedIn, setLoggedIn, history, setIsInfoPopupOpen, changeInfoTooltipImage, changeInfoTooltipMessage, setEmail }) {
   const currentUser = React.useContext(CurrentUserContext); 
 
-  function handleLogin() {
-    setLoggedIn(true);
-  }
-
   return (
     <main className="content">
-      <Switch>
-        <Route path="/sign-up">
-          <Register handleChangeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} />
-        </Route>
-        <Route path="/sign-in">
-          <Login handleLogin={handleLogin} handleChangeHeaderLink={changeHeaderLink} history={history} setEmail={setEmail} />
-        </Route>
-        <Route exact path="/">
-          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up" />}
-        </Route>
-      </Switch>
-      {loggedIn && (
-        <>
          <section className="profile" aria-label="профиль">
          <div className="profile__avatar-block">
            <button onClick={onEditAvatar} type="button" aria-label="Смена аватара" className="profile__avatar-change-button buttons"></button>
@@ -44,8 +24,6 @@ function Main({ onEditAvatar, onEditProfile, cards, onCardClick, onAddPlace, onC
            <Card card={item} key={item._id} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />
          ))}
        </section>
-       </>
-      )}
     </main >
   )
 }

@@ -3,6 +3,7 @@
   font-size: 18px;
   line-height: 22px;
   margin: 0 0 75px;
+  align-self: flex-start;
 }
 
 @media screen and (min-width: 768px) {

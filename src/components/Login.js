@@ -33,8 +33,8 @@ function Login({ handleChangeHeaderLink, handleLogin, history, setEmail }) {
                 Вход
             </p>
             <form onSubmit={handleSubmit} className="login__form">
-                <input className="login__input" required id="email" name="email" type="text" value={values.email || ''} onChange={handleChange} placeholder="Email" />
-                <input className="login__input" required id="password" name="password" type="text" value={values.password || ''} onChange={handleChange} placeholder="Пароль" />
+                <input className="login__input" required id="email" name="email" type="email" value={values.email || ''} onChange={handleChange} placeholder="Email" />
+                <input className="login__input" required id="password" name="password" type="password" value={values.password || ''} onChange={handleChange} placeholder="Пароль" />
                 <button type="submit" onSubmit={handleSubmit} className="login__button buttons">Войти</button>
             </form>
         </section>

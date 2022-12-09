@@ -36,8 +36,8 @@ function Register({ handleChangeHeaderLink, history, setIsInfoPopupOpen, changeI
                 Регистрация
             </p>
             <form onSubmit={handleSubmit} className="register__form">
-                <input className="register__input" required id="email" name="email" type="text" value={values.email || ''} onChange={handleChange} placeholder="Email" />
-                <input className="register__input" required id="password" name="password" type="text" value={values.password || ''} onChange={handleChange} placeholder="Пароль" />
+                <input className="register__input" required id="email" name="email" type="email" value={values.email || ''} onChange={handleChange} placeholder="Email" />
+                <input className="register__input" required id="password" name="password" type="password" value={values.password || ''} onChange={handleChange} placeholder="Пароль" />
                 <button type="submit" onSubmit={handleSubmit} className="register__button buttons">Зарегистрироваться</button>
             </form>
             <p className="register__signin">Уже зарегистрированы? <Link to="sign-in" className="register__login-link">Войти</Link></p>

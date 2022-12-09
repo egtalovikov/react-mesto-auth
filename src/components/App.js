@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, useHistory } from 'react-router-dom';
+import { withRouter, useHistory, Redirect, Switch, Route } from 'react-router-dom';
 import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import Header from './Header';
@@ -12,6 +12,9 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import InfoTooltip from './InfoTooltip';
 import * as auth from '../auth.js';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
 
 function App() {
   const [cards, setCards] = React.useState([]);
@@ -56,17 +59,21 @@ function App() {
     handleTokenCheck();
   }, [])
 
+  function handleLogin() {
+    setLoggedIn(true);
+  }
+
   function handleTokenCheck() {
     if (localStorage.getItem('jwt')) {
       const jwt = localStorage.getItem('jwt');
       auth.checkToken(jwt)
-      .then((res) => {
-        if (res) {
-          setEmail(res.data.email)
-          setLoggedIn(true);
-          history.push('/')
-        }
-      })
+        .then((res) => {
+          if (res) {
+            setEmail(res.data.email)
+            setLoggedIn(true);
+            history.push('/')
+          }
+        })
     }
   }
 
@@ -189,14 +196,28 @@ function App() {
       .finally(() => setIsLoading(false));
   }
 
-  const [headerLink, changeHeaderLink] = React.useState({ link: 'sign-up', title: 'Регистрация'} );
+  const [headerLink, changeHeaderLink] = React.useState({ link: 'sign-up', title: 'Регистрация' });
   const [infoTooltipImage, changeInfoTooltipImage] = React.useState('');
   const [infoTooltipMessage, changeInfoTooltipMessage] = React.useState('');
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Header headerLink={headerLink} loggedIn={loggedIn} setLoggedIn={setLoggedIn} email={email} />
-      <Main onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} setLoggedIn={setLoggedIn} changeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} setEmail={setEmail} />
+      <Switch>
+        <Route path="/sign-up">
+          <main className="content">
+            <Register handleChangeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} />
+          </main>
+        </Route>
+        <Route path="/sign-in">
+          <main className="content">
+            <Login handleLogin={handleLogin} handleChangeHeaderLink={changeHeaderLink} history={history} setEmail={setEmail} />
+          </main>
+        </Route>
+        <ProtectedRoute exact path="/" component={Main} onEditAvatar={handleEditAvatarClick} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} loggedIn={loggedIn} setLoggedIn={setLoggedIn} changeHeaderLink={changeHeaderLink} history={history} setIsInfoPopupOpen={setIsInfoPopupOpen} changeInfoTooltipImage={changeInfoTooltipImage} changeInfoTooltipMessage={changeInfoTooltipMessage} setEmail={setEmail}>
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up" />}
+        </ProtectedRoute>
+      </Switch>
       {loggedIn && <Footer />}
       <EditAvatarPopup isLoading={isLoading} isOpen={isEditAvatarPopupOpen} onClose={handlePopupClose} onUpdateAvatar={handleUpdateAvatar} />
       <AddPlacePopup isLoading={isLoading} isOpen={isAddPlacePopupOpen} onClose={handlePopupClose} onAddPlace={handleAddPlaceSubmit} />
