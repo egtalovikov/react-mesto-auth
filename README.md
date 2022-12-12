@@ -33,6 +33,7 @@ Mesto React - это проектная работа по профессии "В
 * ООП
 * Create React App
 * React Hooks
+* JWT
 
 ## Инструкция по развёртыванию
 
@@ -43,7 +44,7 @@ Mesto React - это проектная работа по профессии "В
 
 * Склонировать репозиторий
 ```
-git clone https://github.com/egtalovikov/mesto-react.git
+git clone https://github.com/egtalovikov/react-mesto-auth.git
 ```
 * Выполнить команду
 ```
