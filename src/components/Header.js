@@ -28,7 +28,7 @@ function Header({ headerLink, email, loggedIn, setLoggedIn }) {
         <img src={logo} alt="Логотип Mesto Russia" className="header__logo" />
         {loggedIn ? (
           <>
-            <div onClick={handleMenuButtonClick} class="header__menu-button">
+            <div onClick={handleMenuButtonClick} className="header__menu-button">
               <span className={`header__burger-line ${isMenuButtonClick ? 'header__burger-line_active' : ''}`}></span>
               <span className={`header__burger-line ${isMenuButtonClick ? 'header__burger-line_active' : ''}`}></span>
               <span className={`header__burger-line ${isMenuButtonClick ? 'header__burger-line_active' : ''}`}></span>
