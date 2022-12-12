@@ -7,9 +7,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.querySelector('.page__container'));
 root.render(
-    <BrowserRouter>
+  <BrowserRouter basename={process.env.REACT_APP_BASENAME || ""}>
+    <React.StrictMode>
       <App />
-    </BrowserRouter>
+    </React.StrictMode>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
