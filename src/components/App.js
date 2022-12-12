@@ -53,6 +53,28 @@ function App() {
     handleTokenCheck();
   }, []);
 
+  useEffect(() => {
+    if (loggedIn) {
+      api
+        .loadUserInfo()
+        .then((res) => {
+          setCurrentUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      api
+        .getInitialCards()
+        .then((values) => {
+          setCards(values);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
+
   function handleTokenCheck() {
     const jwt = localStorage.getItem("jwt");
 
@@ -62,24 +84,6 @@ function App() {
           setEmail(res.data.email);
           setLoggedIn(true);
           history.push("/");
-
-          api
-            .loadUserInfo()
-            .then((res) => {
-              setCurrentUser(res);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-
-          api
-            .getInitialCards()
-            .then((values) => {
-              setCards(values);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
         }
       });
     }
